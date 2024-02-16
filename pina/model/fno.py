@@ -7,6 +7,7 @@ from .layers.fourier import FourierBlock1D, FourierBlock2D, FourierBlock3D
 from .base_no import KernelNeuralOperator
 
 
+
 class FourierIntegralKernel(torch.nn.Module):
     def __init__(self,
                  input_numb_fields,
@@ -69,11 +70,12 @@ class FourierIntegralKernel(torch.nn.Module):
             if isinstance(layers, (tuple, list)):
                 check_consistency(layers, int)
             else:
-                raise ValueError('layers must be tuple or list of int.')
+                raise ValueError("layers must be tuple or list of int.")
         if not isinstance(n_modes, (list, tuple, int)):
             raise ValueError(
-                'n_modes must be a int or list or tuple of valid modes.'
-                ' More information on the official documentation.')
+                "n_modes must be a int or list or tuple of valid modes."
+                " More information on the official documentation."
+            )
 
         # assign padding
         self._padding = padding
@@ -86,7 +88,7 @@ class FourierIntegralKernel(torch.nn.Module):
         elif dimensions == 3:
             fourier_layer = FourierBlock3D
         else:
-            raise NotImplementedError('FNO implemented only for 1D/2D/3D data.')
+            raise NotImplementedError("FNO implemented only for 1D/2D/3D data.")
 
         # Here we build the FNO kernels by stacking Fourier Blocks
 
@@ -106,10 +108,12 @@ class FourierIntegralKernel(torch.nn.Module):
 
         # 3. Assign modes functions for each FNO layer
         if isinstance(n_modes, list):
-            if all(isinstance(i, list)
-                   for i in n_modes) and len(layers) != len(n_modes):
+            if all(isinstance(i, list) for i in n_modes) and len(layers) != len(
+                n_modes
+            ):
                 raise RuntimeError(
-                    'Uncosistent number of layers and functions.')
+                    "Uncosistent number of layers and functions."
+                )
             elif all(isinstance(i, int) for i in n_modes):
                 n_modes = [n_modes] * len(layers)
         else:
